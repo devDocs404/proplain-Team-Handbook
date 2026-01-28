@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agile Kanban Process: Team Handbook</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --stage-ideas: #8b5cf6;
+            --stage-backlog: #f59e0b;
+            --stage-ready: #3b82f6;
+            --stage-progress: #10b981;
+            --stage-review: #f97316;
+            --stage-blocked: #ef4444;
+            --stage-done: #059669;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--gray-900) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #93c5fd;
+            font-weight: 300;
+            max-width: 600px;
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            color: var(--gray-900);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-number {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.125rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .intro-text {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--gray-700);
+        }
+
+        .benefits-card {
+            background: var(--gray-50);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        .benefits-card h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .benefit-icon {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+
+        .benefit-content strong {
+            display: block;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .benefit-content span {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        /* Workflow Pipeline */
+        .pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .stage {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid;
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stage:hover {
+            transform: translateX(8px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .stage::after {
+            content: '↓';
+            position: absolute;
+            bottom: -1.5rem;
+            left: 100px;
+            font-size: 1.5rem;
+            color: var(--gray-300);
+            font-weight: bold;
+        }
+
+        .stage:last-child::after {
+            display: none;
+        }
+
+        .stage-ideas { border-left-color: var(--stage-ideas); background: linear-gradient(to right, #f5f3ff, white); }
+        .stage-backlog { border-left-color: var(--stage-backlog); background: linear-gradient(to right, #fffbeb, white); }
+        .stage-ready { border-left-color: var(--stage-ready); background: linear-gradient(to right, #eff6ff, white); }
+        .stage-progress { border-left-color: var(--stage-progress); background: linear-gradient(to right, #ecfdf5, white); }
+        .stage-review { border-left-color: var(--stage-review); background: linear-gradient(to right, #fff7ed, white); }
+        .stage-blocked { border-left-color: var(--stage-blocked); background: linear-gradient(to right, #fef2f2, white); }
+        .stage-done { border-left-color: var(--stage-done); background: linear-gradient(to right, #d1fae5, white); }
+
+        .stage-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .stage-number {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+
+        .stage-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .stage-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            margin-top: 0.25rem;
+        }
+
+        .owner-badge {
+            background: var(--gray-100);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .stage-content p {
+            color: var(--gray-700);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .criteria-box {
+            background: rgba(255,255,255,0.6);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .criteria-box strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gray-900);
+            font-size: 0.875rem;
+        }
+
+        .criteria-list {
+            list-style: none;
+            font-size: 0.875rem;
+        }
+
+        .criteria-list li {
+            padding: 0.25rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--gray-700);
+        }
+
+        .criteria-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Scenarios */
+        .scenarios-grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .scenario-card {
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .scenario-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .scenario-header {
+            background: var(--gray-50);
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .scenario-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .scenario-a .scenario-icon { background: #dbeafe; }
+        .scenario-b .scenario-icon { background: #fee2e2; }
+        .scenario-c .scenario-icon { background: #fef3c7; }
+        .scenario-d .scenario-icon { background: #f3e8ff; }
+        .scenario-e .scenario-icon { background: #d1fae5; }
+
+        .scenario-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .scenario-type {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .scenario-body {
+            padding: 1.5rem;
+        }
+
+        .flowchart {
+            background: var(--gray-900);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .flowchart::before {
+            content: 'FLOW';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.75rem;
+            font-size: 0.625rem;
+            opacity: 0.5;
+            letter-spacing: 0.1em;
+        }
+
+        .flow-step {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+
+        .flow-action {
+            color: #fbbf24;
+        }
+
+        .flow-decision {
+            color: #f87171;
+            font-weight: bold;
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step;
+        }
+
+        .step-list li {
+            counter-increment: step;
+            padding-left: 3rem;
+            position: relative;
+            margin-bottom: 1rem;
+            padding-top: 0.25rem;
+        }
+
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid var(--warning);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .critical-rule {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left-color: var(--danger);
+        }
+
+        /* Metrics Section */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-desc {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .formula-box {
+            background: var(--gray-900);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .formula {
+            font-size: 1.5rem;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            color: var(--accent);
+        }
+
+        .habits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .habit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .habit-item:hover {
+            border-color: var(--success);
+            background: #f0fdf4;
+        }
+
+        .habit-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .habit-content strong {
+            display: block;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .habit-content span {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .footer {
+            background: var(--gray-50);
+            padding: 2rem 3rem;
+            text-align: center;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .intro-grid { grid-template-columns: 1fr; }
+            .stage { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: 1fr; }
+            .content { padding: 1.5rem; }
+            .hero { padding: 2rem 1.5rem; }
+        }
+
+        .print-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .print-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .print-button { display: none; }
+            .stage:hover { transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="hero">
+        <div class="hero-content">
+            <span class="version-badge">Version 1.0 • January 2026</span>
+            <h1>Agile Kanban Process</h1>
+            <p class="subtitle">Team Handbook for New Members, Stakeholders, & Process Owners</p>
+        </div>
+    </header>
+
+    <main class="content">
+        <!-- Section 1: Introduction -->
+        <section class="section">
+            <h2>
+                <span class="section-number">1</span>
+                Introduction: Why Kanban?
+            </h2>
+            
+            <div class="intro-grid">
+                <div class="intro-text">
+                    <p style="margin-bottom: 1.5rem;">
+                        <strong>Kanban</strong> (Japanese for "signboard") is a visual workflow management method designed to help us visualize work, maximize efficiency, and improve continuously.
+                    </p>
+                    <p>
+                        Unlike time-boxed sprints (Scrum), our Kanban process emphasizes <strong>continuous flow</strong>. This allows us to adapt priorities flexibly, reduce context switching, and spot bottlenecks immediately.
+                    </p>
+                </div>
+
+                <div class="benefits-card">
+                    <h3>🎯 Core Benefits</h3>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">👁️</div>
+                        <div class="benefit-content">
+                            <strong>Enhanced Visibility</strong>
+                            <span>See all work at a glance across the entire value stream.</span>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🌊</div>
+                        <div class="benefit-content">
+                            <strong>Improved Flow</strong>
+                            <span>Focus on finishing work, not just starting it.</span>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🚧</div>
+                        <div class="benefit-content">
+                            <strong>Bottleneck Detection</strong>
+                            <span>Issues become visible immediately when work piles up.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Workflow -->
+        <section class="section">
+            <h2>
+                <span class="section-number">2</span>
+                Our 7-Stage Workflow
+            </h2>
+            <p style="margin-bottom: 2rem; font-size: 1.125rem; color: var(--gray-700);">
+                Our board is divided into 7 distinct stages to ensure quality and control. Each stage has clear entry criteria, ownership, and goals.
+            </p>
+
+            <div class="pipeline">
+                <!-- Stage 1 -->
+                <div class="stage stage-ideas">
+                    <div class="stage-header">
+                        <span class="stage-number">Stage 1</span>
+                        <span class="stage-title">Ideas / Inputs</span>
+                        <div class="stage-meta">
+                            <span class="owner-badge">PM Vision / Stakeholders</span>
+                        </div>
+                    </div>
+                    <div class="stage-content">
+                        <p>Raw ideas, feature requests, and bug reports. No development activity happens here. This is our capture zone to ensure nothing is lost.</p>
+                        <div style="margin-top: 1rem; font-size: 0.875rem; color: var(--stage-ideas); font-weight: 600;">
+                            🎯 Goal: Capture everything so nothing is lost
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 2 -->
+                <div class="stage stage-backlog">
+                    <div class="stage-header">
+                        <span class="stage-number">Stage 2</span>
+                        <span class="stage-title">Backlog</span>
+                        <div class="stage-meta">
+                            <span class="owner-badge">Product Owner (PO)</span>
+                        </div>
+                    </div>
+                    <div class="stage-content">
+                        <p>Approved ideas waiting for prioritization and refinement.</p>
+                        <div class="criteria-box">
+                            <strong>Entry Criteria:</strong>
+                            <ul class="criteria-list">
+                                <li>Clear title and description</li>
+                                <li>Business value defined</li>
+                                <li>Approved by PO</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 3 -->
+                <div class="stage stage-ready">
+                    <div class="stage-header">
+                        <span class="stage-number">Stage 3</span>
+                        <span class="stage-title">Ready (Quality Gate)</span>
+                        <div class="stage-meta">
+                            <span class="owner-badge">Team</span>
+                        </div>
+                    </div>
+                    <div class="stage-content">
+                        <p>Fully defined features ready for development. This is our commitment point.</p>
+                        <div class="criteria-box">
+                            <strong>Definition of Ready (DoR):</strong>
+                            <ul class="criteria-list">
+                                <li>Requirement is unambiguous</li>
+                                <li>Acceptance criteria defined</li>
+                                <li>Effort estimated (points/hours)</li>
+                                <li>No external blockers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 4 -->
+                <div class="stage stage-progress">
+                    <div class="stage-header">
+                        <span class="stage-number">Stage 4</span>
+                        <span class="stage-title">In Progress</span>
+                        <div class="stage-meta">
+                            <span class="owner-badge">Developer</span>
+                        </div>
+                    </div>
+                    <div class="stage-content">
+                        <p>Active development phase. Work is pulled from "Ready" only when capacity exists.</p>
+                        <div class="highlight-box">
+                            <strong>Rule:</strong> One owner per card. Strict WIP (Work In Progress) limits apply. Never push work—only pull when ready.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 5 -->
+                <div class="stage stage-review">
+                    <div class="stage-header">
+                        <span class="stage-number">Stage 5</span>
+                        <span class="stage-title">Review / QA</span>
+                        <div class="stage-meta">
+                            <span class="owner-badge">QA / Peers</span>
+                        </div>
+                    </div>
+                    <div class="stage-content">
+                        <p>Validation against acceptance criteria and quality standards.</p>
+                        <div class="criteria-box">
+                            <strong>Activities:</strong>
+                            <ul class="criteria-list">
+                                <li>Code review</li>
+                                <li>Unit testing</li>
+                                <li>Design compliance</li>
+                                <li>Stakeholder demo</li>
+                            </ul>
+                        </div>
+                        <div class="highlight-box critical-rule" style="margin-top: 1rem;">
+                            <strong>Critical Rule:</strong> If issues are found, do not move the card backward. Keep it here and create sub-tasks for fixes.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 6 -->
+                <div class="stage stage-blocked">
+                    <div class="stage-header">
+                        <span class="stage-number">Stage 6</span>
+                        <span class="stage-title">Blocked</span>
+                        <div class="stage-meta">
+                            <span class="owner-badge">Team / Scrum Master</span>
+                        </div>
+                    </div>
+                    <div class="stage-content">
+                        <p>Work halted due to external impediments (e.g., waiting on API, dependency on another team).</p>
+                        <div class="highlight-box">
+                            <strong>Action Required:</strong> Must include a reason tag. The team "swarms" to resolve these immediately.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 7 -->
+                <div class="stage stage-done">
+                    <div class="stage-header">
+                        <span class="stage-number">Stage 7</span>
+                        <span class="stage-title">Done</span>
+                        <div class="stage-meta">
+                            <span class="owner-badge">Team</span>
+                        </div>
+                    </div>
+                    <div class="stage-content">
+                        <p>Completed value delivered to customers.</p>
+                        <div class="criteria-box">
+                            <strong>Definition of Done (DoD):</strong>
+                            <ul class="criteria-list">
+                                <li>Code complete & merged</li>
+                                <li>All tests passing</li>
+                                <li>Code review approved</li>
+                                <li>Documentation updated</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Scenarios -->
+        <section class="section">
+            <h2>
+                <span class="section-number">3</span>
+                Practical Scenarios & Workflow Scripts
+            </h2>
+            <p style="margin-bottom: 2rem; color: var(--gray-700);">
+                Use these scripts to handle common situations during the software development lifecycle.
+            </p>
+
+            <div class="scenarios-grid">
+                <!-- Scenario A -->
+                <div class="scenario-card scenario-a">
+                    <div class="scenario-header">
+                        <div class="scenario-icon">✨</div>
+                        <div>
+                            <div class="scenario-title">The "Happy Path" Feature</div>
+                            <div class="scenario-type">Standard flow from concept to completion</div>
+                        </div>
+                    </div>
+                    <div class="scenario-body">
+                        <div class="flowchart">
+<span class="flow-step">[Ideas: Feature Request]</span> → <span class="flow-action">(PO Approval)</span> → <span class="flow-step">[Backlog]</span> → <span class="flow-action">(Refinement & Sizing)</span> → <span class="flow-step">[Ready]</span> → <span class="flow-action">(Pull Signal)</span> → <span class="flow-step">[In Progress]</span> → <span class="flow-action">(Code Complete)</span> → <span class="flow-step">[Review/QA]</span> → <span class="flow-action">(DoD Met)</span> → <span class="flow-step">[Done]</span>
+                        </div>
+                        <ol class="step-list">
+                            <li><strong>Ideas/Inputs:</strong> A stakeholder adds a card: "Add 'Dark Mode' to User Profile." It sits here as a raw concept.</li>
+                            <li><strong>Gate to Backlog:</strong> The Product Owner reviews the idea. It aligns with the roadmap, so the PO approves it, adds priority, and moves it to Backlog.</li>
+                            <li><strong>Backlog to Ready:</strong> During grooming, the Team reviews the card. They define acceptance criteria ("Switch toggles UI colors"), estimate effort, and confirm no dependencies. The card moves to Ready.</li>
+                            <li><strong>Ready to In Progress:</strong> A Developer finishes their current task. Checking Ready, they pull the top-priority "Dark Mode" card to In Progress.</li>
+                            <li><strong>In Progress to Review:</strong> Developer completes code and unit tests. They move the card to Review/QA.</li>
+                            <li><strong>Review to Done:</strong> A Peer/QA validates the feature. It passes all criteria. The card meets the Definition of Done and is moved to Done.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Scenario B -->
+                <div class="scenario-card scenario-b">
+                    <div class="scenario-header">
+                        <div class="scenario-icon">🐛</div>
+                        <div>
+                            <div class="scenario-title">The "QA Kickback" (Defect Found)</div>
+                            <div class="scenario-type">Handling defects during Review stage</div>
+                        </div>
+                    </div>
+                    <div class="scenario-body">
+                        <div class="highlight-box critical-rule" style="margin-bottom: 1.5rem;">
+                            Key Rule: Never move cards backward on the board. Flow only moves right!
+                        </div>
+                        <div class="flowchart">
+<span class="flow-step">[Review/QA: Bug Found]</span> → <span class="flow-decision">(STOP: Do Not Move Back)</span> → <span class="flow-action">(Create Sub-task/Fix)</span> → <span class="flow-action">(Verify Fix)</span> → <span class="flow-step">[Done]</span>
+                        </div>
+                        <ol class="step-list">
+                            <li><strong>Context:</strong> The "User Login" feature is in Review/QA.</li>
+                            <li><strong>Discovery:</strong> The QA Engineer finds the "Forgot Password" link is broken.</li>
+                            <li><strong>Critical Decision:</strong> The card remains in Review/QA to maintain accurate flow metrics.</li>
+                            <li><strong>Action:</strong> QA flags the card (Red Label). A sub-task is added: "Fix broken password link."</li>
+                            <li><strong>Resolution:</strong> The Developer pauses other work to fix this immediately (swarming).</li>
+                            <li><strong>Completion:</strong> Once the fix is verified, the card is moved to Done.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Scenario C -->
+                <div class="scenario-card scenario-c">
+                    <div class="scenario-header">
+                        <div class="scenario-icon">🚧</div>
+                        <div>
+                            <div class="scenario-title">The "External Blocker"</div>
+                            <div class="scenario-type">Dependency on external teams</div>
+                        </div>
+                    </div>
+                    <div class="scenario-body">
+                        <div class="flowchart">
+<span class="flow-step">[In Progress]</span> → <span class="flow-action">(External Dependency Hit)</span> → <span class="flow-step">[Blocked]</span> → <span class="flow-action">(Owner Assigned)</span> → <span class="flow-action">(Dependency Resolved)</span> → <span class="flow-step">[In Progress]</span>
+                        </div>
+                        <ol class="step-list">
+                            <li><strong>In Progress:</strong> A Developer is building an API integration.</li>
+                            <li><strong>The Roadblock:</strong> They need a secure API Key from the "Security Team" (external). Work halts.</li>
+                            <li><strong>Move to Blocked:</strong> The Developer moves the card to Blocked.</li>
+                            <li><strong>Documentation:</strong> They write on the card: <em>Reason: Waiting for API Key from Security Team.</em></li>
+                            <li><strong>Ownership:</strong> The Scrum Master takes ownership of following up with Security.</li>
+                            <li><strong>Resolution:</strong> The key is provided. The card is moved back to In Progress.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Scenario D -->
+                <div class="scenario-card scenario-d">
+                    <div class="scenario-header">
+                        <div class="scenario-icon">🚦</div>
+                        <div>
+                            <div class="scenario-title">The "WIP Gridlock" (Board Full)</div>
+                            <div class="scenario-type">Handling WIP limit constraints</div>
+                        </div>
+                    </div>
+                    <div class="scenario-body">
+                        <div class="highlight-box" style="margin-bottom: 1.5rem;">
+                            Key Rule: Stop starting, start finishing!
+                        </div>
+                        <div class="flowchart">
+<span class="flow-step">[Ready: Full]</span> → <span class="flow-step">[In Progress: Full]</span> → <span class="flow-step">[Review/QA: Full]</span> → <span class="flow-action">(Developer Free)</span> → <span class="flow-decision">(DECISION: Do Not Pull New)</span> → <span class="flow-action">(Swarm on Review)</span> → <span class="flow-step">[Done]</span>
+                        </div>
+                        <ol class="step-list">
+                            <li><strong>Context:</strong> In Progress is at its WIP limit (5/5). Review/QA is also full (3/3).</li>
+                            <li><strong>The Situation:</strong> A Developer finishes a task and wants new work.</li>
+                            <li><strong>The Restriction:</strong> They cannot pull from Ready because In Progress is full.</li>
+                            <li><strong>The Swarm:</strong> Instead of violating the limit, the Developer looks at Review/QA.</li>
+                            <li><strong>Action:</strong> They pick up a teammate's pending code review.</li>
+                            <li><strong>Result:</strong> The review is completed, moving that card to Done. Space is created, and flow resumes.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Scenario E -->
+                <div class="scenario-card scenario-e">
+                    <div class="scenario-header">
+                        <div class="scenario-icon">📝</div>
+                        <div>
+                            <div class="scenario-title">The "Vague Request" (Gatekeeping)</div>
+                            <div class="scenario-type">Rejecting unclear requirements</div>
+                        </div>
+                    </div>
+                    <div class="scenario-body">
+                        <div class="flowchart">
+<span class="flow-step">[Ideas: Vague Input]</span> → <span class="flow-action">(Backlog Attempt)</span> → <span class="flow-decision">(REJECTED: Entry Criteria Fail)</span> → <span class="flow-step">[Ideas: Updated]</span> → <span class="flow-step">[Backlog]</span>
+                        </div>
+                        <ol class="step-list">
+                            <li><strong>Ideas/Inputs:</strong> Stakeholder adds: "Make the app faster."</li>
+                            <li><strong>Review:</strong> Product Owner reviews the card.</li>
+                            <li><strong>Rejection:</strong> The card fails Definition of Ready for Backlog (No specific scope).</li>
+                            <li><strong>Feedback:</strong> PO comments: <em>"Please define 'faster'—is this page load time? Which screen?"</em></li>
+                            <li><strong>Refinement:</strong> Stakeholder updates: <em>"Reduce Home Screen load time to &lt; 2 seconds."</em></li>
+                            <li><strong>Approval:</strong> PO moves the card to Backlog.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Metrics -->
+        <section class="section">
+            <h2>
+                <span class="section-number">4</span>
+                Key Metrics & Daily Habits
+            </h2>
+            <p style="margin-bottom: 2rem; color: var(--gray-700);">
+                To ensure this process works, we track data and maintain hygiene.
+            </p>
+
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--gray-900);">Daily Habits</h3>
+            <div class="habits-list">
+                <div class="habit-item">
+                    <span class="habit-icon">🔄</span>
+                    <div class="habit-content">
+                        <strong>Update Daily</strong>
+                        <span>Move cards the moment status changes. Real-time accuracy is crucial.</span>
+                    </div>
+                </div>
+                <div class="habit-item">
+                    <span class="habit-icon">🚫</span>
+                    <div class="habit-content">
+                        <strong>Respect WIP</strong>
+                        <span>Never exceed limits; swarm instead. Protect the flow.</span>
+                    </div>
+                </div>
+                <div class="habit-item">
+                    <span class="habit-icon">🚩</span>
+                    <div class="habit-content">
+                        <strong>Flag Blockers</strong>
+                        <span>Do not wait for standup; flag immediately. Visibility saves time.</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.5rem; margin: 3rem 0 1rem; color: var(--gray-900);">Metrics We Watch</h3>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">📊</div>
+                    <div class="metric-label">Lead Time</div>
+                    <div class="metric-desc">Total time from Request → Delivery (Customer view)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">⏱️</div>
+                    <div class="metric-label">Cycle Time</div>
+                    <div class="metric-desc">Active time from In Progress → Done (Team view)</div>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="margin-top: 2rem;">
+                <strong>Goal:</strong> Maintain a consistent Cycle Time to improve predictability. Consistency beats speed.
+            </div>
+
+            <div class="formula-box">
+                <h4 style="color: white; margin-bottom: 0.5rem; font-size: 1.125rem;">Little's Law</h4>
+                <div class="formula">Average Cycle Time = WIP ÷ Throughput</div>
+                <p style="color: #94a3b8; font-size: 0.875rem; margin-top: 1rem;">
+                    <strong style="color: white;">Insight:</strong> To deliver faster, reduce WIP. Do not just try to "work harder".
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Agile Kanban Process Handbook • Version 1.0 • January 2026</p>
+        <p style="margin-top: 0.5rem; opacity: 0.8;">For internal use by team members, stakeholders, and process owners.</p>
+    </footer>
+</div>
+
+<button class="print-button" onclick="window.print()">
+    🖨️ Print / Save PDF
+</button>
+
+</body>
+</html>
